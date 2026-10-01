@@ -18,7 +18,6 @@ import { db, isFirebaseConfigured } from "../config/firebase.js";
 import { getLocalUser, makeId, subscribeLocalState, updateLocalUser } from "./localStore.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import { apiFetch } from "../utils/apiFetch.js";
-import { emitLessonCompleted } from "./forgeEvents.js";
 import i18n from "../i18n/index.js";
 import { emitScoreChanged } from "./forgeEvents.js";
 import { calculateLessonReward } from "./energyService.js";
@@ -149,6 +148,8 @@ export function subscribeUserCollection(uid, name, callback, constraints = []) {
   }
   return onSnapshot(query(collection(db, "users", uid, name), ...constraints), (snapshot) => {
     callback(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })));
+  }, (error) => {
+    console.error(`[learningService] Failed to subscribe to ${name}:`, error);
   });
 }
 

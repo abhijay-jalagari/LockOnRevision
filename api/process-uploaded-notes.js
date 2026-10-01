@@ -17,6 +17,10 @@ const BLOCKED_IPS = new Set([
   '169.254.169.254',
   '::1',
   '0.0.0.0',
+  '10.0.0.0',
+  '172.16.0.0',
+  '192.168.0.0',
+  '100.64.0.0',
 ]);
 const BLOCKED_HOSTNAMES = new Set([
   'localhost',
@@ -340,6 +344,17 @@ Return ONLY valid JSON with this structure:
     return res.status(200).json({ ok: true, data: generated });
   } catch (error) {
     log.error('Failed to process uploaded notes', error);
+    // Clean up temp files on error
+    for (const filePath of tempFiles) {
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+          log.info('Temp file deleted after error', { filePath });
+        }
+      } catch (cleanupError) {
+        log.warn('Failed to delete temp file after error', { filePath, error: cleanupError.message });
+      }
+    }
     const statusCode = error.message?.includes('Gemini API is not configured') ? 503 : 500;
     const errorMessage = error.message || 'Failed to process uploaded notes';
     return res.status(statusCode).json({ error: errorMessage });

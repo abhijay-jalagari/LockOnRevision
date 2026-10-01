@@ -86,6 +86,13 @@ export function ProfilePage() {
     return () => unsubs.forEach((fn) => fn?.());
   }, [user?.uid]);
 
+  // Cleanup save timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) window.clearTimeout(saveTimeoutRef.current);
+    };
+  }, []);
+
   if (!profile) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">

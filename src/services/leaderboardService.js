@@ -6,7 +6,7 @@ import { onLessonCompleted, onSessionCompleted, onScoreChanged } from "./forgeEv
 
 const PAGE_SIZE = 20;
 
-const ADMIN_FIELDS = new Set(["isAdmin", "role"]);
+const ADMIN_FIELDS = new Set(["isAdmin", "role", "adminRewards"]);
 
 function stripAdminFields(obj) {
   if (!obj || typeof obj !== "object") return obj;

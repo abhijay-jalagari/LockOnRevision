@@ -22,7 +22,7 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if signedIn();
+      allow read: if ownsUserDoc(userId) || isAdmin();
       allow create: if ownsUserDoc(userId)
         && request.resource.data.xp == 0
         && request.resource.data.energy == 0
@@ -34,7 +34,14 @@ service cloud.firestore {
           'email',
           'createdAt',
           'isAdmin',
-          'adminRewards'
+          'role',
+          'adminRewards',
+          'xp',
+          'energy',
+          'totalScore',
+          'streak',
+          'totalStudyHours',
+          'completedLessons'
         ])
         || isAdmin();
       allow delete: if false;

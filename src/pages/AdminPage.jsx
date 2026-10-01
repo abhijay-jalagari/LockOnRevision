@@ -75,7 +75,8 @@ export function AdminPage() {
       setUsers(results);
       setStatus(t("admin_page.found_users", { count: results.length }));
     } catch (error) {
-      setStatus(error.message);
+      setStatus(t("admin_page.operation_failed"));
+      console.error("[AdminPage] Operation failed:", error);
     } finally {
       setBusy(false);
     }
@@ -89,7 +90,8 @@ export function AdminPage() {
       setStatus(t("admin_page.xp_updated", { score: result.totalScore.toLocaleString() }));
       setUsers(await searchUsers(searchTerm));
     } catch (error) {
-      setStatus(error.message);
+      setStatus(t("admin_page.operation_failed"));
+      console.error("[AdminPage] XP adjustment failed:", error);
     } finally {
       setBusy(false);
     }
@@ -103,7 +105,8 @@ export function AdminPage() {
       setStatus(t("admin_page.energy_updated", { score: result.totalScore.toLocaleString() }));
       setUsers(await searchUsers(searchTerm));
     } catch (error) {
-      setStatus(error.message);
+      setStatus(t("admin_page.operation_failed"));
+      console.error("[AdminPage] Energy adjustment failed:", error);
     } finally {
       setBusy(false);
     }
@@ -116,7 +119,8 @@ export function AdminPage() {
       const result = await setUserTotalScore(selectedUserId, Number(totalScoreInput || 0));
       setStatus(t("admin_page.score_set", { score: result.totalScore.toLocaleString() }));
     } catch (error) {
-      setStatus(error.message);
+      setStatus(t("admin_page.operation_failed"));
+      console.error("[AdminPage] Score set failed:", error);
     } finally {
       setBusy(false);
     }
@@ -134,7 +138,8 @@ export function AdminPage() {
       setStatus(t("admin_page.reward_applied", { score: result.totalScore.toLocaleString() }));
       setUsers(await searchUsers(searchTerm));
     } catch (error) {
-      setStatus(error.message);
+      setStatus(t("admin_page.operation_failed"));
+      console.error("[AdminPage] Reward grant failed:", error);
     } finally {
       setBusy(false);
     }
@@ -147,7 +152,8 @@ export function AdminPage() {
       setForgeContent(await fetchAllForgeSubjects());
       setStatus(t("admin_page.forge_subject_removed"));
     } catch (error) {
-      setStatus(error.message);
+      setStatus(t("admin_page.operation_failed"));
+      console.error("[AdminPage] Forge subject removal failed:", error);
     } finally {
       setBusy(false);
     }

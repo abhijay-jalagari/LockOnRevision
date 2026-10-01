@@ -72,7 +72,7 @@ function normalizeExercise(exercise, lesson) {
 
 function buildLessonExercises(lesson) {
   const provided = Array.isArray(lesson.exercises) ? lesson.exercises : [];
-  return provided.map((exercise, _index) => normalizeExercise(exercise, lesson));
+  return provided.map((exercise) => normalizeExercise(exercise, lesson));
 }
 
 
@@ -215,6 +215,9 @@ export function subscribeForgeSubjects(uid, callback) {
     () => {
       if (!cancelled) fetchForgeSubjects(uid).then(callback).catch(() => {});
     },
+    (error) => {
+      console.error("[forgeService] Failed to subscribe to Forge subjects:", error);
+    },
   );
   return () => { cancelled = true; unsub(); };
 }
@@ -226,6 +229,8 @@ export function subscribeForgeUnits(uid, callback) {
 
   return onSnapshot(query(collection(db, "users", uid, "units"), orderBy("updatedAt", "desc")), (snapshot) => {
     callback(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })));
+  }, (error) => {
+    console.error("[forgeService] Failed to subscribe to Forge units:", error);
   });
 }
 
@@ -236,6 +241,8 @@ export function subscribeForgeSubUnits(uid, callback) {
 
   return onSnapshot(query(collection(db, "users", uid, "subUnits"), orderBy("updatedAt", "desc")), (snapshot) => {
     callback(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })));
+  }, (error) => {
+    console.error("[forgeService] Failed to subscribe to Forge sub-units:", error);
   });
 }
 
@@ -246,6 +253,8 @@ export function subscribeForgeLessons(uid, callback) {
 
   return onSnapshot(query(collection(db, "users", uid, "lessons"), orderBy("updatedAt", "desc")), (snapshot) => {
     callback(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })));
+  }, (error) => {
+    console.error("[forgeService] Failed to subscribe to Forge lessons:", error);
   });
 }
 

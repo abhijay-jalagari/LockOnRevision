@@ -229,7 +229,12 @@ function parseResponse(raw, preferences) {
     cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
   }
 
-  const parsed = JSON.parse(cleaned);
+  let parsed;
+  try {
+    parsed = JSON.parse(cleaned);
+  } catch (parseError) {
+    throw new Error("Invalid JSON response from AI model.");
+  }
 
   if (!parsed.weeks || !Array.isArray(parsed.weeks)) {
     throw new Error("Invalid response structure: missing weeks array.");

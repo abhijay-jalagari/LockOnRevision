@@ -36,6 +36,13 @@ export function TimetablePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, timetable?.id]);
 
+  // Cleanup timetable ref on unmount
+  useEffect(() => {
+    return () => {
+      timetableRef.current = null;
+    };
+  }, []);
+
   const handleGenerate = async (preferences) => {
     setBusy(true);
     setError("");

@@ -10,8 +10,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db, isFirebaseConfigured } from "../config/firebase.js";
-import { readLocalUser, writeLocalUser } from "../services/localStore.js";
-import { signOutLocalUser } from "../services/localStore.js";
+import { readLocalUser, writeLocalUser, signOutLocalUser } from "../services/localStore.js";
 import i18n from "../i18n/index.js";
 
 const AuthContext = createContext(null);
@@ -281,7 +280,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (!user || !db || loading) return undefined;
     const userPath = `users/${user.uid}`;
-    return onSnapshot(
+    const unsub = onSnapshot(
       doc(db, "users", user.uid),
       (snapshot) => {
         setProfile(snapshot.exists() ? { id: snapshot.id, ...snapshot.data() } : null);
@@ -298,6 +297,7 @@ export function AuthProvider({ children }) {
         );
       },
     );
+    return unsub;
   }, [user, loading]);
 
   const value = useMemo(

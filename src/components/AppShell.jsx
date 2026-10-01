@@ -11,7 +11,7 @@ import { canAccessAdmin } from "../utils/permissions.js";
 export function AppShell({ children }) {
   const { t } = useTranslation();
   const { isFirebaseConfigured, changePassword, logout, profile, user } = useAuth();
-  const showAdmin = canAccessAdmin(profile, user?.email);
+  const showAdmin = canAccessAdmin(profile);
   const [showChangePw, setShowChangePw] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [pwError, setPwError] = useState("");

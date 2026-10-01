@@ -186,6 +186,9 @@ export function subscribeTimetables(uid, callback) {
   return onSnapshot(
     query(collection(db, "users", uid, "timetables"), orderBy("updatedAt", "desc")),
     (snapshot) => callback(snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    (error) => {
+      console.error("[timetableService] Failed to subscribe to timetables:", error);
+    },
   );
 }
 

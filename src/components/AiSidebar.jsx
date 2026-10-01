@@ -84,6 +84,16 @@ export function AiSidebar() {
     });
   }, []);
 
+  // Cleanup abort controller on unmount
+  useEffect(() => {
+    return () => {
+      if (abortRef.current) {
+        abortRef.current.abort();
+        abortRef.current = null;
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;

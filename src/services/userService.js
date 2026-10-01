@@ -4,7 +4,7 @@ import { calculateUnitReward } from "./energyService.js";
 
 import { doc, updateDoc, increment, serverTimestamp, arrayUnion, arrayRemove, getDocs, getDoc, query, orderBy, collection, limit } from "firebase/firestore";
 
-const ADMIN_FIELDS = new Set(["isAdmin", "role"]);
+const ADMIN_FIELDS = new Set(["isAdmin", "role", "adminRewards"]);
 
 function stripAdminFields(obj) {
   if (!obj || typeof obj !== "object") return obj;

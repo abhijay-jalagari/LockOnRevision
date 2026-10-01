@@ -90,22 +90,12 @@ export async function verifyAuth(req) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    if (process.env.NODE_ENV !== 'production') {
-      return { uid: 'local-dev-user', email: 'local@example.com' };
-    }
     throw new Error("Missing or invalid Authorization header");
   }
 
   const token = authHeader.split("Bearer ")[1];
 
-  try {
-    return await verifyIdToken(token);
-  } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      return { uid: 'local-dev-user', email: 'local@example.com' };
-    }
-    throw error;
-  }
+  return await verifyIdToken(token);
 }
 
 export function requireAuth(handler) {
